@@ -3,7 +3,7 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 app.use(express.json());
