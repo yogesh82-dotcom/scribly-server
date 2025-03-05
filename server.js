@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "https://worklog-1urf.onrender.com/" }));
 
 let logs = [];
 const mongoURI = process.env.MONGO_URI;
