@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
+const path = require("path");
 const cors = require("cors");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
@@ -8,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: "https://worklog-1urf.onrender.com/" }));
+app.use(express.static(path.join(__dirname, "build")));
 
 let logs = [];
 const mongoURI = process.env.MONGO_URI;
@@ -40,6 +42,12 @@ const userSchema = new mongoose.Schema({
 
 const logModel = mongoose.model("worklog", logSchema);
 const userModel = mongoose.model("users", userSchema);
+
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
 
 app.post("/worklogs", async (req, res) => {
   const { userId, title, description } = req.body;
