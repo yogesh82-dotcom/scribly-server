@@ -9,7 +9,6 @@ const bcrypt = require("bcryptjs");
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, "build")));
 
 let logs = [];
 const mongoURI = process.env.MONGO_URI;
@@ -42,12 +41,6 @@ const userSchema = new mongoose.Schema({
 
 const logModel = mongoose.model("worklog", logSchema);
 const userModel = mongoose.model("users", userSchema);
-
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
 
 app.post("/worklogs", async (req, res) => {
   const { userId, title, description } = req.body;
@@ -153,6 +146,11 @@ app.delete("/worklogs/:id", async (req, res) => {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
+});
+
+app.use(express.static(path.join(__dirname, "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 const port = process.env.port || 8000;
